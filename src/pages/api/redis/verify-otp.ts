@@ -22,7 +22,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log('Stored OTP:', storedOtp);
     console.log('Provided OTP:', otp);
 
-    if (storedOtp !== otp) {
+    console.log('Comparing OTPs:', storedOtp === otp);
+
+    if (storedOtp != otp) {
       return res.status(401).json({ success: false, error: 'Invalid OTPs' });
     }
 

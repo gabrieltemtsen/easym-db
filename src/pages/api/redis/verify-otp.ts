@@ -19,8 +19,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const otpKey = `auth:otp:${email}`;
     const storedOtp = await redis.get(otpKey);
 
+    console.log('Stored OTP:', storedOtp);
+    console.log('Provided OTP:', otp);
+
     if (storedOtp !== otp) {
-      return res.status(401).json({ success: false, error: 'Invalid OTP' });
+      return res.status(401).json({ success: false, error: 'Invalid OTPs' });
     }
 
     await redis.del(otpKey);

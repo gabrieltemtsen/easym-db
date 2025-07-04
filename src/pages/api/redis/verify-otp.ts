@@ -1,15 +1,10 @@
 
-import { Redis } from '@upstash/redis';
-import dotenv from 'dotenv';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { redis } from '../../../lib/redis';
 
-dotenv.config();
 
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_URL,
-  token: process.env.UPSTASH_REDIS_TOKEN,
-});
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, error: 'Method Not Allowed' });
   }

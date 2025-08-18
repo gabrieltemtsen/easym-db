@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const otpKey = `auth:otp:${email}`;
     const tokenKey = `auth:token:${email}`;
 
-    await redis.set(otpKey, otp, { ex: 600 }); // OTP expires in 10 minutes
+    await redis.set(otpKey, otp, { ex: 18000 }); // OTP expires in 5 hours
     await redis.set(tokenKey, token, { ex: 604800 }); // Token expires in 7 days
 
     res.status(200).json({ success: true });

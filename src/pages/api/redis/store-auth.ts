@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const tokenKey = `auth:token:${email}`;
-    await redis.set(tokenKey, token, { ex: 604800 }); // Token expires in 7 days
+  await redis.set(tokenKey, token, { ex: 3600 }); // Token expires in 1 hour
 
     res.status(200).json({ success: true });
   } catch (error) {

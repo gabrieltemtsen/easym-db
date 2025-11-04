@@ -17,21 +17,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const otpKey = `auth:otp:${email}`;
-    const storedOtp = await redis.get(otpKey);
+    const storedOtp = await redis.get<string | null>(otpKey);
 
-    console.log('Stored OTP:', storedOtp);
-    console.log('Provided OTP:', otp);
-
-    console.log('Comparing OTPs:', storedOtp === otp);
-
-    if (storedOtp != otp) {
-      return res.status(401).json({ success: false, error: 'Invalid OTPs' });
+    if (!storedOtp || storedOtp !== otp) {
+      return res.status(401).json({ success: false, error: 'Invalid OTP' });
     }
 
     await redis.del(otpKey);
 
     const tokenKey = `auth:token:${email}`;
-    const token = await redis.get(tokenKey);
+    const token = await redis.get<string | null>(tokenKey);
+
+    if (!token) {
+      return res.status(404).json({ success: false, error: 'Token not found' });
+    }
 
     res.status(200).json({ success: true, token });
   } catch (error) {
